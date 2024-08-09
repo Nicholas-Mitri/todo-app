@@ -112,6 +112,21 @@ if __name__ == "__main__":
                 # Exit the loop and end the program
                 break
 
+            case "help" | "h":
+                # Show the user the available commands
+                print(
+                    "Available commands:\n"
+                    "(a)dd: Add a new task to the todo list.\n"
+                    "\tFormat: (a)dd <TASK>\n"
+                    "(s)how: Show all tasks in the todo list.\n"
+                    "\tFormat: (s)how\n"
+                    "(e)dit: Edit an existing task in the todo list.\n"
+                    "\tFormat: (e)dit <NUM> <NEW TASK>\n"
+                    "(c)omplete: Mark a task as complete and remove it from the todo list.\n"
+                    "\tFormat: (c)omplete <NUM>\n"
+                    "(h)elp: Show the available commands.\n"
+                    "quit: Exit the program.\n"
+                )
             case _:
                 # Handle invalid input
                 print("Invalid input. Please try again.")
