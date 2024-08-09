@@ -18,6 +18,8 @@ if __name__ == "__main__":
 
     # Infinite loop to continuously prompt the user for an action
     while True:
+        with open(path_to_todo, "r") as file:
+            todos = file.readlines()
         # Prompt the user for an action and normalize the input
         user_action = (
             input("Type (a)dd, (s)how, (e)dit, (c)omplete, or (q)uit: ").strip().lower()
@@ -33,9 +35,7 @@ if __name__ == "__main__":
 
             case "show" | "s":
                 # Show all tasks in the todo list
-                if os.path.exists(path_to_todo):
-                    with open(path_to_todo, "r") as file:
-                        todos = file.readlines()
+                if os.path.exists(path_to_todo) and len(todos) > 0:
                     for index, item in enumerate(todos, start=1):
                         print(f"{index}: {item}", end="")
                 else:
@@ -44,8 +44,6 @@ if __name__ == "__main__":
             case "edit" | "e":
                 # Edit an existing task in the todo list
                 if os.path.exists(path_to_todo):
-                    with open(path_to_todo, "r+") as file:
-                        todos = file.readlines()
                     try:
                         number = int(
                             input("Enter the number of the task you want to edit: ")
@@ -67,11 +65,9 @@ if __name__ == "__main__":
                 else:
                     print("No tasks found.")
 
-            case "c omplete" | "c":
+            case "complete" | "c":
                 # Mark a task as complete and remove it from the todo list
                 if os.path.exists(path_to_todo):
-                    with open(path_to_todo, "r+") as file:
-                        todos = file.readlines()
                     try:
                         number = int(
                             input("Enter the number of the task you want to complete: ")
@@ -86,9 +82,10 @@ if __name__ == "__main__":
                             f"Invalid input. Number between 1 and {len(todos)} expected."
                         )
                         continue
-                    todos.pop(number - 1)
+                    removed_todo = todos.pop(number - 1)
                     with open(path_to_todo, "w") as file:
                         file.writelines(todos)
+                    print(f"Completed: {removed_todo}")
                 else:
                     print("No tasks found.")
 
