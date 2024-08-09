@@ -18,18 +18,27 @@ if __name__ == "__main__":
 
     # Infinite loop to continuously prompt the user for an action
     while True:
+        # Read the todo list from the file
         with open(path_to_todo, "r") as file:
             todos = file.readlines()
+
         # Prompt the user for an action and normalize the input
         user_action = (
             input("Type (a)dd, (s)how, (e)dit, (c)omplete, or (q)uit: ").strip().lower()
         )
+        # Check if the user entered any input
+        if len(user_action) == 0:
+            print("No input was entered. Please try again.")
+            continue
 
         # Match the user action to the corresponding case
-        match user_action:
+        match user_action.split()[0]:
             case "add" | "a":
                 # Add a new task to the todo list
-                todo = input("Enter a task: ") + "\n"
+                if len(user_action.split()) == 1:
+                    print("No task was entered. Please try again.")
+                    continue
+                todo = user_action.split()[1] + "\n"
                 with open(path_to_todo, "a") as file:
                     file.write(todo)
 
@@ -42,46 +51,56 @@ if __name__ == "__main__":
                     print("No tasks found.")
 
             case "edit" | "e":
-                # Edit an existing task in the todo list
+                # check if the task list exists
                 if os.path.exists(path_to_todo):
-                    try:
-                        number = int(
-                            input("Enter the number of the task you want to edit: ")
+                    if len(user_action.split()) < 3:
+                        print(
+                            "Invalid input. Use format (e)dit <NUM> <NEW TASK>. Please try again."
                         )
-                        if not 1 <= number <= len(todos):
+                        continue
+                    else:
+                        # Edit an existing task in the todo list
+                        try:
+                            number = int(user_action.split()[1])
+                            if not 1 <= number <= len(todos):
+                                print(
+                                    f"Invalid input. Number between 1 and {len(todos)} expected."
+                                )
+                                continue
+                        except ValueError:
                             print(
                                 f"Invalid input. Number between 1 and {len(todos)} expected."
                             )
                             continue
-                    except ValueError:
-                        print(
-                            f"Invalid input. Number between 1 and {len(todos)} expected."
-                        )
-                        continue
-                    new_todo = input("Enter the new task: ") + "\n"
-                    todos[number - 1] = new_todo
-                    with open(path_to_todo, "w") as file:
-                        file.writelines(todos)
+
+                        new_todo = user_action.split()[2] + "\n"
+                        todos[number - 1] = new_todo
+                        with open(path_to_todo, "w") as file:
+                            file.writelines(todos)
                 else:
                     print("No tasks found.")
 
             case "complete" | "c":
                 # Mark a task as complete and remove it from the todo list
                 if os.path.exists(path_to_todo):
-                    try:
-                        number = int(
-                            input("Enter the number of the task you want to complete: ")
+                    if len(user_action.split()) < 2:
+                        print(
+                            "Invalid input. Use format (c)omplete <NUM>. Please try again."
                         )
-                        if not 1 <= number <= len(todos):
+                        continue
+                    else:
+                        try:
+                            number = int(user_action.split()[1])
+                            if not 1 <= number <= len(todos):
+                                print(
+                                    f"Invalid input. Number between 1 and {len(todos)} expected."
+                                )
+                                continue
+                        except ValueError:
                             print(
                                 f"Invalid input. Number between 1 and {len(todos)} expected."
                             )
                             continue
-                    except ValueError:
-                        print(
-                            f"Invalid input. Number between 1 and {len(todos)} expected."
-                        )
-                        continue
                     removed_todo = todos.pop(number - 1)
                     with open(path_to_todo, "w") as file:
                         file.writelines(todos)
