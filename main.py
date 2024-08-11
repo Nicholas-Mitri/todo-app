@@ -1,4 +1,3 @@
-# This is a project from the Udemy course "Python Mega Course", app 1.
 # It is a ToDo App that helps you manage your  efficiently.
 
 # The application is a console application that allows the user to add, show, edit, complete and exit tasks.
@@ -16,7 +15,7 @@ if __name__ == "__main__":
         # Create the directory if it does not exist
         os.makedirs(os.path.dirname(path_to_todo))
 
-    # Infinite loop to continuously prompt the user for an action
+    # Continuously prompt the user for an action
     while True:
         # Read the todo list from the file
         with open(path_to_todo, "r") as file:
