@@ -5,6 +5,11 @@
 import os
 
 
+def write_file(todos, path_to_todo):
+    with open(path_to_todo, "w") as file:
+        file.writelines(todos)
+
+
 if __name__ == "__main__":
 
     todos = []
@@ -74,8 +79,7 @@ if __name__ == "__main__":
 
                         new_todo = user_action.split()[2] + "\n"
                         todos[number - 1] = new_todo
-                        with open(path_to_todo, "w") as file:
-                            file.writelines(todos)
+                        write_file(todos, path_to_todo)
                 else:
                     print("No tasks found.")
 
@@ -101,8 +105,7 @@ if __name__ == "__main__":
                             )
                             continue
                     removed_todo = todos.pop(number - 1)
-                    with open(path_to_todo, "w") as file:
-                        file.writelines(todos)
+                    write_file(todos, path_to_todo)
                     print(f"Completed: {removed_todo}")
                 else:
                     print("No tasks found.")
