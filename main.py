@@ -3,22 +3,35 @@
 # The application is a console application that allows the user to add, show, edit, complete and exit tasks.
 
 import os
+from re import S
 
 
 def write_file(todos, path_to_todo):
+    """
+    Write the list of todos to a file.
+
+    Args:
+        todos (list): A list of todo items to be written to the file.
+        path_to_todo (str): The file path where the todos will be saved.
+
+    This function opens the specified file in write mode and writes all
+    the todo items from the 'todos' list to the file.
+    """
     with open(path_to_todo, "w") as file:
         file.writelines(todos)
 
 
 if __name__ == "__main__":
 
+    # Initialize an empty list to store todo items
     todos = []
+    # Set the path for the todo file using os.path.join for cross-platform compatibility
     path_to_todo = os.path.join(os.curdir, "files", "todos.txt")
 
     # Check if the directory of the given path exists
     if not os.path.exists(os.path.dirname(path_to_todo)):
         # Create the directory if it does not exist
-        os.makedirs(os.path.dirname(path_to_todo))
+        os.makedirs(os.path.dirname(path_to_todo), exist_ok=True)
 
     # Continuously prompt the user for an action
     while True:
@@ -115,7 +128,7 @@ if __name__ == "__main__":
                 break
 
             case "help" | "h":
-                # Show the user the available commands
+                # Display available commands to the user
                 print(
                     "Available commands:\n"
                     "(a)dd: Add a new task to the todo list.\n"
@@ -129,6 +142,6 @@ if __name__ == "__main__":
                     "(h)elp: Show the available commands.\n"
                     "quit: Exit the program.\n"
                 )
+
             case _:
-                # Handle invalid input
                 print("Invalid input. Please try again.")
