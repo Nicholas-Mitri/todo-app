@@ -4,3 +4,4 @@ playground.js
 .venv/
 files/todos.txt
 main_opt.py
+test.py

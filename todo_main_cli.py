@@ -4,6 +4,9 @@
 
 import os
 from re import S
+from datetime import datetime
+
+print("Today is", datetime.now().strftime("%b %d, %Y"))
 
 
 def write_file(todos, path_to_todo):
@@ -11,7 +14,7 @@ def write_file(todos, path_to_todo):
     Write the list of todos to a file.
 
     Args:
-        todos (list): A list of todo items to be written to the file.
+        'todos' (list): A list of todo items to be written to the file.
         path_to_todo (str): The file path where the todos will be saved.
 
     This function opens the specified file in write mode and writes all
@@ -145,3 +148,6 @@ if __name__ == "__main__":
 
             case _:
                 print("Invalid input. Please try again.")
+
+
+# Create a decorator that will log the time a function takes to execute.
