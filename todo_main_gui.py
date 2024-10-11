@@ -44,6 +44,8 @@ if __name__ == "__main__":
     edit_button = sg.Button("Edit", tooltip="Edit an existing task")
     # Create a button to add the task
     complete_button = sg.Button("Complete", tooltip="Mark selected task as complete")
+    exit_button = sg.Button("Exit")
+
     # Create list of tasks
     tasks_list = sg.Listbox(
         values=todos,
@@ -57,7 +59,7 @@ if __name__ == "__main__":
         layout=[
             [input_label],
             [input_box, add_button],
-            [tasks_list, [edit_button], [complete_button]],
+            [tasks_list, [edit_button, complete_button, exit_button]],
         ],
         font=("helvetica", 20),
     )
@@ -84,7 +86,6 @@ if __name__ == "__main__":
                 input_box.update(value=todo_to_edit)
 
             case "Edit":
-
                 todo_to_edit = values["todos"][0]
                 new_todo = values["task"] + "\n"
                 if not new_todo:
@@ -105,7 +106,8 @@ if __name__ == "__main__":
                 todos.pop(index)
                 write_todos(todos, path_to_todo)
                 tasks_list.update(todos)
-
+            case "Exit":
+                break
             case sg.WIN_CLOSED:
                 # Exit the loop and end the program
                 break
