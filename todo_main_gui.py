@@ -1,3 +1,12 @@
+"""
+Todo List Application with GUI
+Author: Nicholas Mitri
+Date: 2024-01-09
+
+A simple todo list application with a graphical user interface built using FreeSimpleGUI.
+Allows users to add, edit, complete and manage todo items through an intuitive GUI.
+"""
+
 import os
 import FreeSimpleGUI as sg
 
