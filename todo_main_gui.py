@@ -1,7 +1,7 @@
 """
 Todo List Application with GUI
 Author: Nicholas Mitri
-Date: 2024-01-09
+Date: 2024-10-28
 
 A simple todo list application with a graphical user interface built using FreeSimpleGUI.
 Allows users to add, edit, complete and manage todo items through an intuitive GUI.
