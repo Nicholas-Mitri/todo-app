@@ -31,6 +31,29 @@ def write_file(todos, path_to_todo):
         file.writelines(todos)
 
 
+def add_todo():
+    todo = st.session_state["new_todo"]
+    if not todo:
+        st.session_state.message_placeholder.text = (
+            "No task was entered. Please try again."
+        )
+        return
+    todos.append(todo + "\n")
+    write_todos(todos, path_to_todo)
+    st.session_state["new_todo"] = ""
+    st.session_state.message_placeholder.text = "Success"
+
+
+def del_todo():
+    for key, value in st.session_state.items():
+        if key.startswith("chk"):  # type: ignore
+            if value:
+                break
+
+    todos.pop(int(key[-1]))  # type: ignore
+    write_todos(todos, path_to_todo)
+
+
 if __name__ == "__main__":
 
     # Initialize an empty list to store todo items
@@ -46,33 +69,21 @@ if __name__ == "__main__":
     with open(path_to_todo, "r") as file:
         todos = file.readlines()
 
-    for todo in todos:
-        st.checkbox(todo)
+    for i, todo in enumerate(todos):
+        st.checkbox(todo, on_change=del_todo, key=f"chk_{i}")
 
     st.text_input(
-        label="Add Task", placeholder="Add new task...", label_visibility="hidden"
+        label="Add Task",
+        placeholder="Add new task...",
+        label_visibility="hidden",
+        on_change=add_todo,
+        key="new_todo",
     )
 
-#     while True:
-
-#         event, values = app_window.read()  # type: ignore
-#         print(event)
-#         print(values)
-
-#         # Match the user action to the corresponding case
-#         match event:
-#             case "Add":
-#                 # Add a new task to the todo list
-#                 if not values["task"]:
-#                     sg.popup("No task was entered. Please try again.")
-#                     continue
-#                 todos.append(values["task"] + "\n")
-#                 write_todos(todos, path_to_todo)
-#                 tasks_list.update(todos)
-
-#             case "todos":
-#                 todo_to_edit = values["todos"][0].rstrip("\n")
-#                 input_box.update(value=todo_to_edit)
+    st.text(body="sample text")
+    if "message_placeholder" not in st.session_state:
+        st.session_state["message_placeholder"] = st.text("")
+    st.session_state
 
 #             case "Edit":
 #                 todo_to_edit = values["todos"][0]
@@ -85,20 +96,5 @@ if __name__ == "__main__":
 #                 write_todos(todos, path_to_todo)
 #                 tasks_list.update(todos)
 
-#             case "Complete":
-
-#                 if len(values["todos"]) == 0:
-#                     sg.popup("No task selected. Please try again.")
-#                     continue
-#                 todo_to_complete = values["todos"][0]
-#                 index = todos.index(todo_to_complete)
-#                 todos.pop(index)
-#                 write_todos(todos, path_to_todo)
-#                 tasks_list.update(todos)
-#             case "Exit":
-#                 break
-#             case sg.WIN_CLOSED:
-#                 # Exit the loop and end the program
-#                 break
 
 #     app_window.close()
