@@ -9,6 +9,7 @@ to-do items via a web UI.
 """
 
 import os
+import time
 import streamlit as st
 
 from main_opt import write_todos
@@ -33,15 +34,10 @@ def write_file(todos, path_to_todo):
 
 def add_todo():
     todo = st.session_state["new_todo"]
-    if not todo:
-        st.session_state.message_placeholder.text = (
-            "No task was entered. Please try again."
-        )
-        return
     todos.append(todo + "\n")
     write_todos(todos, path_to_todo)
+    message_placeholder.write(f"Success!!")
     st.session_state["new_todo"] = ""
-    st.session_state.message_placeholder.text = "Success"
 
 
 def del_todo():
@@ -50,8 +46,11 @@ def del_todo():
             if value:
                 break
 
-    todos.pop(int(key[-1]))  # type: ignore
+    index = int(key[-1])  # type: ignore
+    message_placeholder.write(f":material/check: {todos[index]}")
+    todos.pop(index)
     write_todos(todos, path_to_todo)
+    del st.session_state[key]
 
 
 if __name__ == "__main__":
@@ -80,21 +79,4 @@ if __name__ == "__main__":
         key="new_todo",
     )
 
-    st.text(body="sample text")
-    if "message_placeholder" not in st.session_state:
-        st.session_state["message_placeholder"] = st.text("")
-    st.session_state
-
-#             case "Edit":
-#                 todo_to_edit = values["todos"][0]
-#                 new_todo = values["task"] + "\n"
-#                 if not new_todo:
-#                     sg.popup("No task was entered. Please try again.")
-#                     continue
-#                 index = todos.index(todo_to_edit)
-#                 todos[index] = new_todo
-#                 write_todos(todos, path_to_todo)
-#                 tasks_list.update(todos)
-
-
-#     app_window.close()
+    message_placeholder = st.empty()
