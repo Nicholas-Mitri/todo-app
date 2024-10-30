@@ -5,3 +5,4 @@ playground.js
 files/todos.txt
 main_opt.py
 test.py
+__pycache__
